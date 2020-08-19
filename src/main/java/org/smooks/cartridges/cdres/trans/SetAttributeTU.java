@@ -42,10 +42,11 @@
  */
 package org.smooks.cartridges.cdres.trans;
 
-import org.smooks.cdr.annotation.ConfigParam;
 import org.smooks.container.ExecutionContext;
 import org.smooks.delivery.dom.DOMElementVisitor;
 import org.w3c.dom.Element;
+
+import javax.inject.Inject;
 
 /**
  * Set a DOM element attribute <u>during the processing phase</u>.
@@ -72,17 +73,17 @@ import org.w3c.dom.Element;
  */
 public class SetAttributeTU implements DOMElementVisitor {
 
-    @ConfigParam
+    @Inject
 	private String attributeName;
 
-    @ConfigParam
+    @Inject
 	private String attributeValue;
 
-    @ConfigParam(use = ConfigParam.Use.OPTIONAL, defaultVal = "false")
-	private boolean visitBefore;
+    @Inject
+	private Boolean visitBefore = false;
 
-    @ConfigParam(use = ConfigParam.Use.OPTIONAL, defaultVal = "false")
-	private boolean overwrite;
+    @Inject
+	private Boolean overwrite = false;
 
     public void visitBefore(Element element, ExecutionContext executionContext) {
         if(visitBefore) {

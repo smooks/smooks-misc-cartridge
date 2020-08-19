@@ -42,11 +42,12 @@
  */
 package org.smooks.cartridges.cdres.trans;
 
-import org.smooks.cdr.annotation.ConfigParam;
 import org.smooks.container.ExecutionContext;
 import org.smooks.delivery.dom.DOMElementVisitor;
 import org.smooks.xml.DomUtils;
 import org.w3c.dom.Element;
+
+import javax.inject.Inject;
 
 /**
  * Removes a DOM element <u>during the processing phase</u>.
@@ -70,8 +71,8 @@ import org.w3c.dom.Element;
  */
 public class RemoveElementTU implements DOMElementVisitor {
 
-    @ConfigParam(use = ConfigParam.Use.OPTIONAL, defaultVal = "true")
-	private boolean keepChildContent;
+    @Inject
+	private Boolean keepChildContent = true;
 
     public void visitBefore(Element element, ExecutionContext executionContext) {
     }

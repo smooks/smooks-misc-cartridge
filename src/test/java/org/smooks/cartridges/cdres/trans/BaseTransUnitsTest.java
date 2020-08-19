@@ -42,8 +42,18 @@
  */
 package org.smooks.cartridges.cdres.trans;
 
+import org.junit.BeforeClass;
+import org.smooks.Smooks;
 import org.smooks.cdr.SmooksResourceConfiguration;
-import org.smooks.cdr.annotation.Configurator;
+import org.smooks.cdr.injector.FieldInjector;
+import org.smooks.cdr.injector.Scope;
+import org.smooks.cdr.lifecycle.DefaultLifecycleManager;
+import org.smooks.cdr.lifecycle.LifecycleManager;
+import org.smooks.cdr.lifecycle.phase.PostConstructLifecyclePhase;
+import org.smooks.cdr.registry.Registry;
+import org.smooks.cdr.registry.lookup.LifecycleManagerLookup;
+import org.smooks.container.ApplicationContext;
+import org.smooks.container.MockApplicationContext;
 import org.smooks.xml.XmlUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -54,21 +64,33 @@ import static org.junit.Assert.*;
 
 public class BaseTransUnitsTest {
 
+    private static LifecycleManager lifecycleManager;
+    private static Registry registry;
+
+    @BeforeClass
+    public static void beforeClass() {
+        ApplicationContext applicationContext = new MockApplicationContext();
+        registry = applicationContext.getRegistry();
+        lifecycleManager = registry.lookup(new LifecycleManagerLookup());
+    }
+    
     @Test
     public void test_RenameAttributeTU() {
-        Document doc = parseCPResource("/testpage1.html");
-        SmooksResourceConfiguration resourceConfiguration = new SmooksResourceConfiguration("body", "device", "xxx");
-        Element body = (Element) XmlUtil.getNode(doc, "/html/body");
-        RenameAttributeTU tu;
+        RenameAttributeTU tu = new RenameAttributeTU();
 
+        SmooksResourceConfiguration resourceConfiguration = new SmooksResourceConfiguration("body", "device", "xxx");
         resourceConfiguration.setParameter("attributeName", "attrib1");
         resourceConfiguration.setParameter("attributeNewName", "attrib2");
-        tu = Configurator.configure(new RenameAttributeTU(), resourceConfiguration);
+
+        lifecycleManager.applyPhase(tu, new PostConstructLifecyclePhase(new Scope(registry, resourceConfiguration, tu)));
+
+        Document doc = parseCPResource("/testpage1.html");
+        Element body = (Element) XmlUtil.getNode(doc, "/html/body");
         tu.visitAfter(body, null);
         assertEquals("Default overwrite protection failed.", "value2", body.getAttribute("attrib2"));
 
         resourceConfiguration.setParameter("overwrite", "true");
-        tu = Configurator.configure(new RenameAttributeTU(), resourceConfiguration);
+        lifecycleManager.applyPhase(tu, new PostConstructLifecyclePhase(new Scope(registry, resourceConfiguration, tu)));
         tu.visitAfter(body, null);
         assertFalse("Rename failed to remove target attribute.", body.hasAttribute("attrib1"));
         assertEquals("Overwrite failed.", "value1", body.getAttribute("attrib2"));
@@ -76,14 +98,14 @@ public class BaseTransUnitsTest {
 
     @Test
     public void test_RemoveAttributeTU() {
-        Document doc = parseCPResource("/testpage1.html");
         SmooksResourceConfiguration resourceConfiguration = new SmooksResourceConfiguration("body", "device", "xxx");
-        Element body = (Element) XmlUtil.getNode(doc, "/html/body");
-        RemoveAttributeTU tu;
-
         resourceConfiguration.setParameter("attributeName", "attrib1");
-        tu = Configurator.configure(new RemoveAttributeTU(), resourceConfiguration);
 
+        RemoveAttributeTU tu = new RemoveAttributeTU();
+        lifecycleManager.applyPhase(tu, new PostConstructLifecyclePhase(new Scope(registry, resourceConfiguration, tu)));
+
+        Document doc = parseCPResource("/testpage1.html");
+        Element body = (Element) XmlUtil.getNode(doc, "/html/body");
         assertTrue("XPath failed - test corrupted.", body.hasAttribute("attrib1"));
         tu.visitAfter(body, null);
         assertFalse("Failed to remove target attribute.", body.hasAttribute("attrib1"));
@@ -91,14 +113,14 @@ public class BaseTransUnitsTest {
 
     @Test
     public void test_RenameElementTU() {
-        Document doc = parseCPResource("/testpage1.html");
         SmooksResourceConfiguration resourceConfiguration = new SmooksResourceConfiguration("body", "device", "xxx");
-        Element body = (Element) XmlUtil.getNode(doc, "/html/body");
-        RenameElementTU tu;
-
         resourceConfiguration.setParameter("replacementElement", "head");
-        tu = Configurator.configure(new RenameElementTU(), resourceConfiguration);
 
+        RenameElementTU tu = new RenameElementTU();
+        lifecycleManager.applyPhase(tu, new PostConstructLifecyclePhase(new Scope(registry, resourceConfiguration, tu)));
+
+        Document doc = parseCPResource("/testpage1.html");
+        Element body = (Element) XmlUtil.getNode(doc, "/html/body");
         tu.visitAfter(body, null);
         assertNull("Failed to rename target element.", XmlUtil.getNode(doc, "/html/body"));
         assertNotNull("Failed to rename target element.", XmlUtil.getNode(doc, "/html/head"));
@@ -112,8 +134,9 @@ public class BaseTransUnitsTest {
         RenameElementTU tu;
 
         resourceConfiguration.setParameter("replacementElement", "head");
-        tu = Configurator.configure(new RenameElementTU(), resourceConfiguration);
-
+        tu = new RenameElementTU();
+        lifecycleManager.applyPhase(tu, new PostConstructLifecyclePhase(new Scope(registry, resourceConfiguration, tu)));
+        
         tu.visitAfter(body, null);
         assertNull("Failed to rename target element.", XmlUtil.getNode(doc, "/html/body"));
         assertNotNull("Failed to rename target element.", XmlUtil.getNode(doc, "/html/head"));
@@ -124,10 +147,9 @@ public class BaseTransUnitsTest {
         Document doc = parseCPResource("/testpage1.html");
         SmooksResourceConfiguration resourceConfiguration = new SmooksResourceConfiguration("body", "device", "xxx");
         Element body = (Element) XmlUtil.getNode(doc, "/html/body");
-        RemoveElementTU tu;
-
-        tu = Configurator.configure(new RemoveElementTU(), resourceConfiguration);
-
+        RemoveElementTU tu = new RemoveElementTU();
+        lifecycleManager.applyPhase(tu, new PostConstructLifecyclePhase(new Scope(registry, resourceConfiguration, tu)));
+        
         tu.visitAfter(body, null);
         assertNull("Failed to remove target element.", XmlUtil.getNode(doc, "/html/body"));
     }
@@ -137,10 +159,9 @@ public class BaseTransUnitsTest {
         Document doc = parseCPResource("/testpage1.html");
         SmooksResourceConfiguration resourceConfiguration = new SmooksResourceConfiguration("html", "xxx");
         Element body = (Element) XmlUtil.getNode(doc, "/html/body");
-        RemoveElementTU tu;
-
-        tu = Configurator.configure(new RemoveElementTU(), resourceConfiguration);
-
+        RemoveElementTU tu = new RemoveElementTU();
+        lifecycleManager.applyPhase(tu, new PostConstructLifecyclePhase(new Scope(registry, resourceConfiguration, tu)));
+        
         // So remove the root element...
         tu.visitAfter(doc.getDocumentElement(), null);
         assertEquals("Failed to remove root element.", body, doc.getDocumentElement());
@@ -155,16 +176,16 @@ public class BaseTransUnitsTest {
         Document doc = parseCPResource("/testpage1.html");
         SmooksResourceConfiguration resourceConfiguration = new SmooksResourceConfiguration("body", "device", "xxx");
         Element body = (Element) XmlUtil.getNode(doc, "/html/body");
-        SetAttributeTU tu;
+        SetAttributeTU tu = new SetAttributeTU();
 
         resourceConfiguration.setParameter("attributeName", "attrib1");
         resourceConfiguration.setParameter("attributeValue", "value3");
-        tu = Configurator.configure(new SetAttributeTU(), resourceConfiguration);
+        lifecycleManager.applyPhase(tu, new PostConstructLifecyclePhase(new Scope(registry, resourceConfiguration, tu)));
         tu.visitAfter(body, null);
         assertEquals("Default overwrite protection failed.", "value1", body.getAttribute("attrib1"));
 
         resourceConfiguration.setParameter("overwrite", "true");
-        tu = Configurator.configure(new SetAttributeTU(), resourceConfiguration);
+        lifecycleManager.applyPhase(tu, new PostConstructLifecyclePhase(new Scope(registry, resourceConfiguration, tu)));
         tu.visitAfter(body, null);
         assertEquals("Overwrite failed.", "value3", body.getAttribute("attrib1"));
     }

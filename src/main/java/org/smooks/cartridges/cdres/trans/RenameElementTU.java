@@ -42,11 +42,12 @@
  */
 package org.smooks.cartridges.cdres.trans;
 
-import org.smooks.cdr.annotation.ConfigParam;
 import org.smooks.container.ExecutionContext;
 import org.smooks.delivery.dom.DOMElementVisitor;
 import org.smooks.xml.DomUtils;
 import org.w3c.dom.Element;
+
+import javax.inject.Inject;
 
 /**
  * Renames/replaces an element in the document <u>during the processing phase</u>.
@@ -77,14 +78,14 @@ import org.w3c.dom.Element;
  */
 public class RenameElementTU implements DOMElementVisitor {
 
-    @ConfigParam
+    @Inject
     private String replacementElement;
 
-    @ConfigParam(use = ConfigParam.Use.OPTIONAL, defaultVal = "true")
-	private boolean keepChildContent;
+    @Inject
+	private Boolean keepChildContent = true;
 
-    @ConfigParam(use = ConfigParam.Use.OPTIONAL, defaultVal = "true")
-	private boolean keepAttributes;
+    @Inject
+	private Boolean keepAttributes = true;
 
     public void visitBefore(Element element, ExecutionContext executionContext) {
     }
