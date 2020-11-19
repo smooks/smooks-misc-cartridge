@@ -46,7 +46,7 @@ import java.io.IOException;
 import java.io.Writer;
 
 import org.smooks.container.ExecutionContext;
-import org.smooks.delivery.dom.serialize.DefaultSerializationUnit;
+import org.smooks.delivery.dom.serialize.DefaultDOMSerializerVisitor;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Element;
@@ -72,7 +72,7 @@ import javax.inject.Inject;
  * See {@link org.smooks.cdr.SmooksResourceConfiguration}.
  * @author tfennelly
  */
-public class EmptyElementSU extends DefaultSerializationUnit {
+public class EmptyElementSU extends DefaultDOMSerializerVisitor {
 
     @Inject
     private Boolean wellFormed = true;
@@ -83,8 +83,8 @@ public class EmptyElementSU extends DefaultSerializationUnit {
 	public void writeElementStart(Element element, Writer writer, ExecutionContext executionContext) throws IOException {
 		writer.write((int)'<');
 		writer.write(element.getTagName());
-		
-		writeAttributes(element.getAttributes(), writer);
+
+		domToXmlWriter.writeAttributes(element.getAttributes(), writer);
 	}
 
 	/* (non-Javadoc)
