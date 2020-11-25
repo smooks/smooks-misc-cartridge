@@ -6,7 +6,7 @@
 
     <groupId>org.smooks.cartridges</groupId>
     <artifactId>smooks-misc-cartridge</artifactId>
-    <version>2.0.0-M2-SNAPSHOT</version>
+    <version>2.0.0-M2</version>
     <packaging>bundle</packaging>
 
     <name>Smooks Misc Cartridge</name>
@@ -47,7 +47,7 @@
         <dependency>
             <groupId>org.smooks</groupId>
             <artifactId>smooks-core</artifactId>
-            <version>2.0.0-M2-SNAPSHOT</version>
+            <version>2.0.0-M2</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -199,7 +199,7 @@
     <distributionManagement>
         <repository>
             <id>ossrh</id>
-            <url>http://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
         <snapshotRepository>
             <id>ossrh</id>
