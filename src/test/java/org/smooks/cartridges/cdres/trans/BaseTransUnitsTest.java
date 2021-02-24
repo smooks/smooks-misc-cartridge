@@ -44,14 +44,15 @@ package org.smooks.cartridges.cdres.trans;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.smooks.cdr.ResourceConfig;
-import org.smooks.container.ApplicationContext;
-import org.smooks.container.MockApplicationContext;
-import org.smooks.injector.Scope;
-import org.smooks.lifecycle.LifecycleManager;
-import org.smooks.lifecycle.phase.PostConstructLifecyclePhase;
-import org.smooks.registry.Registry;
-import org.smooks.registry.lookup.LifecycleManagerLookup;
+import org.smooks.api.ApplicationContext;
+import org.smooks.api.Registry;
+import org.smooks.api.lifecycle.LifecycleManager;
+import org.smooks.api.resource.config.ResourceConfig;
+import org.smooks.engine.injector.Scope;
+import org.smooks.engine.lifecycle.PostConstructLifecyclePhase;
+import org.smooks.engine.lookup.LifecycleManagerLookup;
+import org.smooks.engine.resource.config.DefaultResourceConfig;
+import org.smooks.tck.MockApplicationContext;
 import org.smooks.xml.XmlUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -74,7 +75,7 @@ public class BaseTransUnitsTest {
     public void test_RenameAttributeTU() {
         RenameAttributeTU tu = new RenameAttributeTU();
 
-        ResourceConfig resourceConfig = new ResourceConfig("body", "device", "xxx");
+        ResourceConfig resourceConfig = new DefaultResourceConfig("body", "device", "xxx");
         resourceConfig.setParameter("attributeName", "attrib1");
         resourceConfig.setParameter("attributeNewName", "attrib2");
 
@@ -94,7 +95,7 @@ public class BaseTransUnitsTest {
 
     @Test
     public void test_RemoveAttributeTU() {
-        ResourceConfig resourceConfig = new ResourceConfig("body", "device", "xxx");
+        ResourceConfig resourceConfig = new DefaultResourceConfig("body", "device", "xxx");
         resourceConfig.setParameter("attributeName", "attrib1");
 
         RemoveAttributeTU tu = new RemoveAttributeTU();
@@ -109,7 +110,7 @@ public class BaseTransUnitsTest {
 
     @Test
     public void test_RenameElementTU() {
-        ResourceConfig resourceConfig = new ResourceConfig("body", "device", "xxx");
+        ResourceConfig resourceConfig = new DefaultResourceConfig("body", "device", "xxx");
         resourceConfig.setParameter("replacementElement", "head");
 
         RenameElementTU tu = new RenameElementTU();
@@ -125,7 +126,7 @@ public class BaseTransUnitsTest {
     @Test
     public void test_RenameElementTU_root_element() {
         Document doc = parseCPResource("/testpage1.html");
-        ResourceConfig resourceConfig = new ResourceConfig("body", "device", "xxx");
+        ResourceConfig resourceConfig = new DefaultResourceConfig("body", "device", "xxx");
         Element body = (Element) XmlUtil.getNode(doc, "/html/body");
         RenameElementTU tu;
 
@@ -141,7 +142,7 @@ public class BaseTransUnitsTest {
     @Test
     public void test_RemoveElementTU() {
         Document doc = parseCPResource("/testpage1.html");
-        ResourceConfig resourceConfig = new ResourceConfig("body", "device", "xxx");
+        ResourceConfig resourceConfig = new DefaultResourceConfig("body", "device", "xxx");
         Element body = (Element) XmlUtil.getNode(doc, "/html/body");
         RemoveElementTU tu = new RemoveElementTU();
         lifecycleManager.applyPhase(tu, new PostConstructLifecyclePhase(new Scope(registry, resourceConfig, tu)));
@@ -153,7 +154,7 @@ public class BaseTransUnitsTest {
     @Test
     public void test_RemoveElementTU_root_element() {
         Document doc = parseCPResource("/testpage1.html");
-        ResourceConfig resourceConfig = new ResourceConfig("html", "xxx");
+        ResourceConfig resourceConfig = new DefaultResourceConfig("html", "xxx");
         Element body = (Element) XmlUtil.getNode(doc, "/html/body");
         RemoveElementTU tu = new RemoveElementTU();
         lifecycleManager.applyPhase(tu, new PostConstructLifecyclePhase(new Scope(registry, resourceConfig, tu)));
@@ -170,7 +171,7 @@ public class BaseTransUnitsTest {
     @Test
     public void test_SetAttributeTU() {
         Document doc = parseCPResource("/testpage1.html");
-        ResourceConfig resourceConfig = new ResourceConfig("body", "device", "xxx");
+        ResourceConfig resourceConfig = new DefaultResourceConfig("body", "device", "xxx");
         Element body = (Element) XmlUtil.getNode(doc, "/html/body");
         SetAttributeTU tu = new SetAttributeTU();
 

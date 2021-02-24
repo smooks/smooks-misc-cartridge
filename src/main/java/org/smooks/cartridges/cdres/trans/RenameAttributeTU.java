@@ -42,8 +42,8 @@
  */
 package org.smooks.cartridges.cdres.trans;
 
-import org.smooks.container.ExecutionContext;
-import org.smooks.delivery.dom.DOMElementVisitor;
+import org.smooks.api.ExecutionContext;
+import org.smooks.api.resource.visitor.dom.DOMElementVisitor;
 import org.w3c.dom.Element;
 
 import javax.inject.Inject;
@@ -68,7 +68,7 @@ import javax.inject.Inject;
  * 		child content. Default false. --&gt;
  * 	&lt;param name="<b>visitBefore</b>"&gt;<i>true/false</i>&lt;/param&gt;
  * &lt;/smooks-resource&gt;</pre>
- * See {@link org.smooks.cdr.SmooksResourceConfiguration}.
+ * See {@link org.smooks.api.resource.config.ResourceConfig}.
  * @author tfennelly
  */
 public class RenameAttributeTU implements DOMElementVisitor {
