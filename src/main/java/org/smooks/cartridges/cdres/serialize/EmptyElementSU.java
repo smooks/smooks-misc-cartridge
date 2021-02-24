@@ -42,19 +42,13 @@
  */
 package org.smooks.cartridges.cdres.serialize;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import org.smooks.container.ExecutionContext;
-import org.smooks.delivery.dom.serialize.DefaultDOMSerializerVisitor;
-import org.w3c.dom.CDATASection;
-import org.w3c.dom.Comment;
-import org.w3c.dom.Element;
-import org.w3c.dom.EntityReference;
-import org.w3c.dom.Node;
-import org.w3c.dom.Text;
+import org.smooks.api.ExecutionContext;
+import org.smooks.engine.delivery.dom.serialize.DefaultDOMSerializerVisitor;
+import org.w3c.dom.*;
 
 import javax.inject.Inject;
+import java.io.IOException;
+import java.io.Writer;
 
 /**
  * Empty element serialization unit.
@@ -69,7 +63,7 @@ import javax.inject.Inject;
  * 	&lt;!-- (Optional) Should the empty element be printed "well-formed". Default true. --&gt;
  * 	&lt;param name="<b>wellFormed</b>"&gt;<i>true/false</i>&lt;/param&gt;
  * &lt;/smooks-resource&gt;</pre>
- * See {@link org.smooks.cdr.SmooksResourceConfiguration}.
+ * See {@link org.smooks.api.resource.config.ResourceConfig}.
  * @author tfennelly
  */
 public class EmptyElementSU extends DefaultDOMSerializerVisitor {

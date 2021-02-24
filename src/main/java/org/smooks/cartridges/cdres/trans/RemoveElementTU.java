@@ -42,9 +42,9 @@
  */
 package org.smooks.cartridges.cdres.trans;
 
-import org.smooks.container.ExecutionContext;
-import org.smooks.delivery.dom.DOMElementVisitor;
-import org.smooks.xml.DomUtils;
+import org.smooks.api.ExecutionContext;
+import org.smooks.api.resource.visitor.dom.DOMElementVisitor;
+import org.smooks.support.DomUtils;
 import org.w3c.dom.Element;
 
 import javax.inject.Inject;
@@ -66,7 +66,7 @@ import javax.inject.Inject;
  * 
  * &lt;/smooks-resource&gt;</pre>
  * 
- * See {@link org.smooks.cdr.SmooksResourceConfiguration}.
+ * See {@link org.smooks.api.resource.config.ResourceConfig}.
  * @author tfennelly
  */
 public class RemoveElementTU implements DOMElementVisitor {
