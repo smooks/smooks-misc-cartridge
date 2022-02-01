@@ -75,10 +75,10 @@ public class EmptyElementSU extends DefaultDOMSerializerVisitor {
 	 * @see org.smooks.serialize.SerializationUnit#writeElementStart(org.w3c.dom.Element, java.io.Writer, org.smooks.useraegnt.UAContext)
 	 */
 	public void writeElementStart(Element element, Writer writer, ExecutionContext executionContext) throws IOException {
-		writer.write((int)'<');
+		writer.write('<');
 		writer.write(element.getTagName());
 
-		domToXmlWriter.writeAttributes(element.getAttributes(), writer);
+		domSerializer.writeAttributes(element.getAttributes(), writer);
 	}
 
 	/* (non-Javadoc)
