@@ -1,1 +1,0 @@
-# smooks-misc-cartridge

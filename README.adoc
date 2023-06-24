@@ -1,0 +1,5 @@
+= smooks-misc-cartridge
+
+image:https://img.shields.io/maven-central/v/org.smooks.cartridges/smooks-calc-cartridge[Maven Central]
+image:https://img.shields.io/nexus/s/org.smooks.cartridges/smooks-misc-cartridge?server=https%3A%2F%2Foss.sonatype.org[Sonatype Nexus (Snapshots)]
+image:https://github.com/smooks/smooks-misc-cartridge/workflows/CI/badge.svg[Build Status]
