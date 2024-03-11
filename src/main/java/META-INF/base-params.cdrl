@@ -8,7 +8,7 @@
 	NB: See device-profile.xml
 -->
 
-<smooks-resource-list default-selector="device-parameters"> 
+<smooks-resource-list>
 
 	<!--
 		Base HTML4 parameters.
