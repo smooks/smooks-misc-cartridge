@@ -6,7 +6,7 @@
 
     <groupId>org.smooks.cartridges</groupId>
     <artifactId>smooks-misc-cartridge</artifactId>
-    <version>2.0.0-RC4-SNAPSHOT</version>
+    <version>2.0.0-RC4</version>
 
     <name>Smooks Misc Cartridge</name>
     <url>https://www.smooks.org</url>
@@ -40,7 +40,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <gpg.skip>true</gpg.skip>
-        <smooks.version>2.0.0-SNAPSHOT</smooks.version>
+        <smooks.version>2.0.0-RC4</smooks.version>
     </properties>
 
     <dependencies>
